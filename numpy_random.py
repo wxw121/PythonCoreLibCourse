@@ -222,30 +222,30 @@ def visualization_examples():
     # 1. 均匀分布
     uniform_samples = rng.random(1000)
     axs[0, 0].hist(uniform_samples, bins=30, alpha=0.7)
-    axs[0, 0].set_title('均匀分布 Uniform(0, 1)')
-    axs[0, 0].set_xlabel('值')
-    axs[0, 0].set_ylabel('频率')
+    axs[0, 0].set_title('Uniform Distribution (0, 1)')
+    axs[0, 0].set_xlabel('Value')
+    axs[0, 0].set_ylabel('Frequency')
 
     # 2. 正态分布
     normal_samples = rng.normal(0, 1, 1000)
     axs[0, 1].hist(normal_samples, bins=30, alpha=0.7)
-    axs[0, 1].set_title('正态分布 Normal(0, 1)')
-    axs[0, 1].set_xlabel('值')
-    axs[0, 1].set_ylabel('频率')
+    axs[0, 1].set_title('Normal Distribution (0, 1)')
+    axs[0, 1].set_xlabel('Value')
+    axs[0, 1].set_ylabel('Frequency')
 
     # 3. 二项分布
     binomial_samples = rng.binomial(n=10, p=0.5, size=1000)
     axs[1, 0].hist(binomial_samples, bins=range(0, 12), alpha=0.7)
-    axs[1, 0].set_title('二项分布 Binomial(10, 0.5)')
-    axs[1, 0].set_xlabel('值')
-    axs[1, 0].set_ylabel('频率')
+    axs[1, 0].set_title('Binomial Distribution (10, 0.5)')
+    axs[1, 0].set_xlabel('Value')
+    axs[1, 0].set_ylabel('Frequency')
 
     # 4. 泊松分布
     poisson_samples = rng.poisson(lam=5, size=1000)
     axs[1, 1].hist(poisson_samples, bins=range(0, 15), alpha=0.7)
-    axs[1, 1].set_title('泊松分布 Poisson(5)')
-    axs[1, 1].set_xlabel('值')
-    axs[1, 1].set_ylabel('频率')
+    axs[1, 1].set_title('Poisson Distribution (5)')
+    axs[1, 1].set_xlabel('Value')
+    axs[1, 1].set_ylabel('Frequency')
 
     # 调整布局
     plt.tight_layout()
@@ -268,3 +268,7 @@ def main():
         visualization_examples()
     except Exception as e:
         print(f"\n无法运行可视化示例: {e}")
+
+
+if __name__ == "__main__":
+    main()

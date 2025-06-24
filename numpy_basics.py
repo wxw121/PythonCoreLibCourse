@@ -55,12 +55,12 @@ def array_creation():
     print(ones_arr)
 
     # 4. 创建等差数列
-    arange_arr = np.arange(0, 10, 2)  # 从0到10，步长为2
+    arange_arr = np.arange(0, 11, 2)  # 从0到10，步长为2
     print("\n4. 创建等差数列:")
     print(arange_arr)
 
     # 5. 创建线性等分数组
-    linspace_arr = np.linspace(0, 1, 5)  # 在0和1之间创建5个等距点
+    linspace_arr = np.linspace(0, 1, 6)  # 在0和1之间创建5个等距点
     print("\n5. 创建线性等分数组:")
     print(linspace_arr)
 

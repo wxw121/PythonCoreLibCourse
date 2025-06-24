@@ -301,3 +301,33 @@ def custom_data_types():
 
     print(f"结构化数组:\n{people}")
     print(f"数据类型: {people.dtype}")
+
+def main():
+    """
+    主函数，按顺序运行所有示例
+    """
+    print("="*50)
+    print("NumPy数据输入输出教程")
+    print("="*50)
+    print("\n本教程将演示NumPy的各种数据输入输出功能，包括：")
+    print("1. 数组的保存和加载")
+    print("2. 文本文件输入输出")
+    print("3. 二进制文件输入输出")
+    print("4. 与其他格式的互操作性")
+    print("5. 自定义数据类型")
+    
+    input("\n按Enter键开始演示...")
+    
+    # 按顺序运行所有示例
+    save_load_arrays()
+    text_file_io()
+    binary_file_io()
+    interoperability()
+    custom_data_types()
+    
+    print("\n"+"="*50)
+    print("NumPy数据输入输出教程完成！")
+    print("="*50)
+
+if __name__ == "__main__":
+    main()

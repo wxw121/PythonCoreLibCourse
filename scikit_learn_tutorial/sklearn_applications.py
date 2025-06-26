@@ -108,8 +108,12 @@ def text_classification_example():
     # 特征重要性分析
     print("\n6. 特征重要性分析...")
     feature_names = text_clf.named_steps['tfidf'].get_feature_names_out()
-    feature_importances = np.abs(text_clf.named_steps['clf'].coef_[0])
-
+    
+    # 使用MultinomialNB的feature_log_prob_计算特征重要性
+    nb_model = text_clf.named_steps['clf']
+    # 计算两个类别之间的对数概率差异作为特征重要性
+    feature_importances = np.abs(nb_model.feature_log_prob_[0] - nb_model.feature_log_prob_[1])
+    
     # 获取最重要的特征
     top_features = pd.DataFrame({
         '特征': feature_names,

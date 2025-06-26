@@ -317,11 +317,11 @@ def grid_search_example():
     
     # 可视化参数重要性
     results = pd.DataFrame(grid_search.cv_results_)
-    
+
     # 创建参数得分热图
     pivot_tables = {}
-    for param1 in ['classifier__n_estimators', 'classifier__max_depth']:
-        for param2 in ['classifier__min_samples_split']:
+    for param1 in ['param_classifier__n_estimators', 'param_classifier__max_depth']:
+        for param2 in ['param_classifier__min_samples_split']:
             if param1 != param2:
                 pivot = pd.pivot_table(
                     results,

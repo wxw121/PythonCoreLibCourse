@@ -8,7 +8,8 @@
 PythonCoreLibCourse/
 ├── matplotlib_seaborn_tutorial/  # Matplotlib和Seaborn数据可视化教程
 ├── numpy_tutorial/              # NumPy数值计算教程
-└── pandas_tutorial/             # Pandas数据分析教程
+├── pandas_tutorial/             # Pandas数据分析教程
+└── scikit_learn_tutorial/       # Scikit-learn机器学习教程
 ```
 
 ## 教程模块
@@ -33,6 +34,15 @@ PythonCoreLibCourse/
 - 数据操作和转换
 - 数据可视化集成
 
+### 4. Scikit-learn教程
+- 机器学习基础概念
+- 数据预处理和特征工程
+- 分类算法（逻辑回归、决策树、随机森林、SVM等）
+- 回归算法（线性回归、岭回归、Lasso回归等）
+- 聚类算法（K-means、DBSCAN、层次聚类等）
+- 模型评估与优化
+- 高级主题（集成学习、管道构建、参数优化等）
+
 ## 安装和使用
 
 1. 克隆仓库：
@@ -54,6 +64,10 @@ pip install -r requirements.txt
 
 # 安装Pandas教程依赖
 cd ../pandas_tutorial
+pip install -r requirements.txt
+
+# 安装Scikit-learn教程依赖
+cd ../scikit_learn_tutorial
 pip install -r requirements.txt
 ```
 

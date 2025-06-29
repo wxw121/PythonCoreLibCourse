@@ -39,11 +39,11 @@ pip install torch  # 或 pip install tensorflow
 
 ## 学习路径
 
-1. 首先阅读 `getting_started.md` 了解基础知识
-2. 然后查看 `models_usage.md` 学习如何使用预训练模型
-3. 接着学习 `pipeline_usage.md` 了解简化的API使用方法
-4. 深入研究 `fine_tuning.md` 学习如何微调模型
-5. 最后探索 `advanced_topics.md` 了解高级技巧和最佳实践
+1. 首先阅读 [getting_started.md](getting_started.md)了解基础知识
+2. 然后查看 [models_usage.md](models_usage.md) 学习如何使用预训练模型
+3. 接着学习 [pipeline_usage.md](pipeline_usage.md) 了解简化的API使用方法
+4. 深入研究 [fine_tuning.md](fine_tuning.md) 学习如何微调模型
+5. 最后探索 [advanced_topics.md](advanced_topics.md) 了解高级技巧和最佳实践
 
 ## 参考资源
 

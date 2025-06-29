@@ -342,27 +342,145 @@ def main():
     """
     主函数：展示不同的问答方法
     """
-    # 创建问答系统实例
-    qa_system = QuestionAnsweringSystem()
+    try:
+        print("\n=== Hugging Face Transformers 问答系统示例 ===")
+        
+        # 创建问答系统实例
+        print("正在初始化问答系统...")
+        qa_system = QuestionAnsweringSystem()
+        print("问答系统初始化成功！")
 
-    # 1. 简单的pipeline方法
-    print("\n=== 使用简单的pipeline方法 ===")
-    context = """
-    Hugging Face是一家人工智能公司，成立于2016年，总部位于纽约和巴黎。
-    该公司开发了Transformers库，这是一个用于自然语言处理的开源库，
-    支持PyTorch、TensorFlow和JAX等深度学习框架。
-    """
+        # 1. 简单的pipeline方法
+        print("\n=== 使用简单的pipeline方法 ===")
+        context = """
+        Hugging Face是一家人工智能公司，成立于2016年，总部位于纽约和巴黎。
+        该公司开发了Transformers库，这是一个用于自然语言处理的开源库，
+        支持PyTorch、TensorFlow和JAX等深度学习框架。
+        Hugging Face还维护着一个模型中心，称为Hugging Face Hub，
+        其中包含了数千个预训练模型，可以用于各种NLP任务。
+        """
 
-    questions = [
-        "Hugging Face是什么时候成立的？",
-        "Hugging Face的总部在哪里？",
-        "Transformers库支持哪些深度学习框架？"
-    ]
+        questions = [
+            "Hugging Face是什么时候成立的？",
+            "Hugging Face的总部在哪里？",
+            "Transformers库支持哪些深度学习框架？"
+        ]
 
-    for question in questions:
-        answer = qa_system.answer_question_simple(question, context)
-        print(f"\n问题: {question}")
-        print(f"回答: {answer['answer']}")
-        print(f"置信度: {answer['score']:.4f}")
+        for question in questions:
+            try:
+                print(f"\n问题: {question}")
+                answer = qa_system.answer_question_simple(question, context)
+                print(f"回答: {answer['answer']}")
+                print(f"置信度: {answer['score']:.4f}")
+            except Exception as e:
+                print(f"处理问题时出错: {e}")
 
-    # 2. 使用高级方法处理长
+        # 2. 使用高级方法处理长文本
+        print("\n\n=== 使用高级方法处理长文本 ===")
+        long_context = """
+        Hugging Face是一家人工智能公司，成立于2016年，总部位于纽约和巴黎。
+        该公司由Clément Delangue、Julien Chaumond和Thomas Wolf创立。
+        Hugging Face最初是一个聊天机器人应用，后来转型为开源NLP技术提供商。
+        
+        该公司开发了Transformers库，这是一个用于自然语言处理的开源库，
+        支持PyTorch、TensorFlow和JAX等深度学习框架。Transformers库提供了
+        数千个预训练模型，用于文本、图像和音频处理。
+        
+        Hugging Face还维护着一个模型中心，称为Hugging Face Hub，
+        其中包含了数千个预训练模型，可以用于各种NLP任务，如文本分类、
+        命名实体识别、问答、摘要生成等。截至2023年，Hub上已有超过
+        100,000个公开可用的模型和数据集。
+        
+        2021年，Hugging Face的估值达到了20亿美元，成为AI领域的独角兽公司。
+        该公司的客户包括谷歌、微软、亚马逊等科技巨头。
+        
+        Hugging Face还提供了Datasets库，这是一个用于轻松访问和共享NLP数据集的库，
+        以及Tokenizers库，这是一个用于实现快速文本标记化的库。
+        """
+
+        complex_questions = [
+            "Hugging Face的创始人是谁？",
+            "Hugging Face Hub上有多少个模型和数据集？",
+            "Hugging Face在2021年的估值是多少？"
+        ]
+
+        print("使用高级方法处理长文本，可以更好地处理跨段落的问题")
+        for question in complex_questions:
+            try:
+                print(f"\n问题: {question}")
+                answer = qa_system.answer_question_advanced(question, long_context)
+                print(f"回答: {answer['text']}")
+                print(f"置信度: {answer['score']:.4f}")
+                print(f"位置: 字符 {answer['start']} 到 {answer['end']}")
+            except Exception as e:
+                print(f"处理问题时出错: {e}")
+
+        # 3. 比较两种方法的结果
+        print("\n\n=== 比较两种方法的结果 ===")
+        comparison_question = "Hugging Face提供了哪些主要的库？"
+        print(f"问题: {comparison_question}")
+        
+        try:
+            simple_answer = qa_system.answer_question_simple(comparison_question, long_context)
+            print("\nPipeline方法结果:")
+            print(f"回答: {simple_answer['answer']}")
+            print(f"置信度: {simple_answer['score']:.4f}")
+        except Exception as e:
+            print(f"Pipeline方法出错: {e}")
+            
+        try:
+            advanced_answer = qa_system.answer_question_advanced(comparison_question, long_context)
+            print("\n高级方法结果:")
+            print(f"回答: {advanced_answer['text']}")
+            print(f"置信度: {advanced_answer['score']:.4f}")
+        except Exception as e:
+            print(f"高级方法出错: {e}")
+
+        # 4. 交互式问答会话（可选）
+        print("\n\n=== 交互式问答会话 ===")
+        print("您可以开始一个交互式问答会话，输入问题并获取回答")
+        print("1. 您可以输入'quit'退出会话")
+        print("2. 您可以输入'context'更改上下文")
+        
+        user_input = input("\n是否开始交互式会话？(y/n): ")
+        if user_input.lower() == 'y':
+            qa_system.interactive_qa()
+        else:
+            print("已跳过交互式会话")
+
+        # 5. 微调模型（可选，因为训练可能需要较长时间）
+        print("\n\n=== 微调问答模型 ===")
+        print("注意: 微调过程可能需要较长时间和较大的计算资源")
+        print("所需资源:")
+        print("- GPU加速（推荐）")
+        print("- 至少8GB RAM")
+        print("- 足够的存储空间用于数据集和模型")
+        
+        user_input = input("\n是否要运行微调示例？(y/n): ")
+        if user_input.lower() == 'y':
+            try:
+                output_dir = fine_tune_qa_model()
+                print(f"\n微调完成！模型已保存到 {output_dir}")
+                print("您可以使用以下代码加载微调后的模型:")
+                print(f"qa_system = QuestionAnsweringSystem(model_name='{output_dir}')")
+            except Exception as e:
+                print(f"\n微调过程中出错: {e}")
+                print("微调是一个资源密集型过程，可能需要更强大的硬件")
+        else:
+            print("\n已跳过微调过程")
+            
+        # 总结
+        print("\n\n=== 问答系统功能总结 ===")
+        print("1. 简单的pipeline方法 - 适用于短文本和简单问题")
+        print("2. 高级方法 - 适用于长文本和复杂问题")
+        print("3. 交互式问答会话 - 用于实时问答")
+        print("4. 模型微调 - 用于适应特定领域或语言")
+        print("\n您可以根据需求选择合适的方法，或者将它们结合使用")
+        
+    except Exception as e:
+        print(f"\n运行示例时出现未预期的错误: {e}")
+        print("请确保您已正确安装所有依赖项:")
+        print("pip install transformers datasets torch numpy tqdm")
+
+if __name__ == "__main__":
+    main()

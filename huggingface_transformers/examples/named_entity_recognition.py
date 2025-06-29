@@ -7,19 +7,44 @@ from transformers import AutoModelForTokenClassification, AutoTokenizer, pipelin
 from datasets import load_dataset
 import torch
 from torch.utils.data import DataLoader
-from transformers import AdamW, get_scheduler
+from transformers import get_scheduler
+from torch.optim import AdamW
 from tqdm.auto import tqdm
 import numpy as np
 from seqeval.metrics import accuracy_score, f1_score, classification_report
+
+def handle_warnings():
+    """
+    处理常见的Hugging Face警告
+    """
+    import os
+    import warnings
+    
+    # 禁用符号链接警告
+    os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+    
+    # 过滤掉特定警告
+    warnings.filterwarnings("ignore", message=".*Xet Storage is enabled for this repo.*")
+    warnings.filterwarnings("ignore", message=".*huggingface_hub.*cache-system uses symlinks.*")
+    
+    print("注意: 如果您看到关于符号链接的警告，可以通过以下方式解决:")
+    print("1. 在Windows上激活开发者模式: 设置 -> 更新和安全 -> 开发者选项 -> 开发人员模式")
+    print("2. 或者以管理员身份运行Python")
+    print("3. 或者设置环境变量 HF_HUB_DISABLE_SYMLINKS_WARNING=1 来禁用警告\n")
+    
+    print("如果您看到关于Xet Storage的警告，可以通过安装以下包来提高性能:")
+    print("pip install huggingface_hub[hf_xet] 或 pip install hf_xet\n")
 
 def simple_approach():
     """
     使用pipeline API的简单方法
     """
-    print("=== 使用Pipeline API的简单方法 ===")
+    # 处理常见警告
+    handle_warnings()
     
-    # 创建NER pipeline
-    ner_pipeline = pipeline("ner", aggregation_strategy="simple")
+    print("=== 使用Pipeline API的简单方法 ===")
+    print("正在下载并加载模型，这可能需要几分钟时间...")
+    print("如果下载失败，请检查网络连接或考虑使用离线模式")
     
     # 准备一些测试文本
     texts = [
@@ -28,14 +53,60 @@ def simple_approach():
         "Apple Inc. was founded by Steve Jobs, Steve Wozniak, and Ronald Wayne."
     ]
 
-    # 进行预测
-    for text in texts:
-        print(f"\n文本: {text}")
-        results = ner_pipeline(text)
+    try:
+        # 创建NER pipeline，设置较长的超时时间
+        print("\n正在尝试下载和加载模型...")
+        ner_pipeline = pipeline(
+            "ner", 
+            aggregation_strategy="simple",
+            model_kwargs={"local_files_only": False, "use_auth_token": None},
+            config_kwargs={"local_files_only": False, "use_auth_token": None},
+            tokenizer_kwargs={"local_files_only": False, "use_auth_token": None, "timeout": 60}  # 增加到60秒
+        )
+        
+        print("模型加载成功！开始进行命名实体识别...\n")
+        
+        # 进行预测
+        for text in texts:
+            print(f"\n文本: {text}")
+            results = ner_pipeline(text)
 
-        print("识别的实体:")
-        for entity in results:
-            print(f"- {entity['word']} ({entity['entity_group']}): 置信度 {entity['score']:.4f}")
+            print("识别的实体:")
+            for entity in results:
+                print(f"- {entity['word']} ({entity['entity_group']}): 置信度 {entity['score']:.4f}")
+    
+    except Exception as e:
+        print(f"\n下载或加载模型时出错: {e}")
+        print("\n如果是网络连接问题，您可以尝试以下解决方案:")
+        print("1. 检查您的网络连接")
+        print("2. 使用代理服务器")
+        print("3. 增加超时时间")
+        print("4. 使用离线模式 (参考: https://huggingface.co/docs/transformers/installation#offline-mode)")
+        
+        print("\n由于无法加载模型，这里提供一个简单的规则匹配示例来演示NER的概念:")
+        for text in texts:
+            print(f"\n文本: {text}")
+            # 简单的规则匹配示例
+            if "Sarah" in text:
+                print("识别的实体: Sarah (人名)")
+            if "Microsoft" in text:
+                print("识别的实体: Microsoft (组织)")
+            if "Seattle" in text:
+                print("识别的实体: Seattle (地点)")
+            if "Eiffel Tower" in text:
+                print("识别的实体: Eiffel Tower (地标)")
+            if "Paris" in text:
+                print("识别的实体: Paris (地点)")
+            if "France" in text:
+                print("识别的实体: France (国家)")
+            if "Apple Inc." in text:
+                print("识别的实体: Apple Inc. (组织)")
+            if "Steve Jobs" in text:
+                print("识别的实体: Steve Jobs (人名)")
+            if "Steve Wozniak" in text:
+                print("识别的实体: Steve Wozniak (人名)")
+            if "Ronald Wayne" in text:
+                print("识别的实体: Ronald Wayne (人名)")
 
 def advanced_approach():
     """
@@ -195,12 +266,17 @@ def main():
     """
     主函数：运行两种方法的示例
     """
-    # 运行简单方法
-    simple_approach()
+    try:
+        # 运行简单方法
+        simple_approach()
 
-    # 运行高级方法（可选，因为训练可能需要较长时间）
-    # 如果只想看简单的pipeline示例，可以注释掉下面这行
-    # advanced_approach()
+        # 运行高级方法（可选，因为训练可能需要较长时间）
+        # 如果只想看简单的pipeline示例，可以注释掉下面这行
+        # advanced_approach()
+    except Exception as e:
+        print(f"发生错误: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()

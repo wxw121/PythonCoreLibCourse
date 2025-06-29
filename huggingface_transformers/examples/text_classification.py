@@ -7,7 +7,8 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 from datasets import load_dataset
 import torch
 from torch.utils.data import DataLoader
-from transformers import AdamW, get_scheduler
+from transformers import get_scheduler
+from torch.optim import AdamW
 from tqdm.auto import tqdm
 import numpy as np
 from sklearn.metrics import accuracy_score, classification_report

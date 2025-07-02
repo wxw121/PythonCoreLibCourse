@@ -1,5 +1,7 @@
 # Python核心库教程
 
+中文 | [English](README_EN.md)
+
 这个项目包含了Python数据科学核心库的教程和示例代码，包括NumPy、Pandas、Matplotlib、Seaborn、PyTorch以及Hugging Face Transformers。每个模块都提供了从基础到高级的完整学习路径。
 
 ## 项目结构
